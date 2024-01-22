@@ -96,8 +96,8 @@ pre {
     position: relative
 }
 
-.bs-component+.bs-component {
-    margin-top: 1rem
+.bs-component+.bs-component{
+    margin-top:1rem
 }
 
 .bs-component .card {
