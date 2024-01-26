@@ -41,7 +41,7 @@ pre {
 #home .navbar-brand .nav-link,
 #help .navbar-brand .nav-link {
     display: inline-block;
-    margin-right: -30px
+    margin-right: -30px;
 }
 
 #home .navbar-brand img,
