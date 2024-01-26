@@ -6,7 +6,7 @@ function NavBar(props) {
     return (
         <div className="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
             <div className="container">
-                <a href="https://bootswatch.com/" className="navbar-brand">Chamados-Idace</a>
+                <a href="/home" className="navbar-brand">Idace Chamados</a>
                 <button className="navbar-toggler" type="button" 
                         data-toggle="collapse" 
                         data-target="#navbarResponsive"
@@ -17,10 +17,10 @@ function NavBar(props) {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarResponsive">
                     <ul className="navbar-nav">
-                    <NavBarItem render={props.isUsuarioAutenticado} href="/home" label="Home" />
-                    <NavBarItem render={props.isUsuarioAutenticado} href="/cadastro-usuarios" label="Usuários" />
-                    <NavBarItem render={props.isUsuarioAutenticado} href="/consulta-lancamentos" label="Lançamentos" />
-                    <NavBarItem render={props.isUsuarioAutenticado} onClick={props.deslogar} href="/login" label="Sair" />
+                        <NavBarItem render={props} href="/home" label="Home" />
+                        <NavBarItem render={props} href="/cadastro-usuarios" label="Usuários" />
+                        <NavBarItem render={props} href="/consulta-lancamentos" label="Lançamentos" />
+                        <NavBarItem render={props} href="/login" label="Sair" />
                     </ul>
                 </div>
             </div>

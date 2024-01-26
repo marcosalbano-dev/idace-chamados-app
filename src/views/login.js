@@ -1,6 +1,8 @@
 import React from "react";
 import Card from '../components/card'
 import FormGroup from "../components/form-group";
+import { withRouter } from 'react-router-dom';
+import axios from "axios";
 
 class Login extends React.Component {
 
@@ -10,14 +12,23 @@ class Login extends React.Component {
     }
 
     entrar = () => {
-        console.log('Email: ', this.state.email)
-        console.log('Senha: ', this.state.senha)
+        axios.post('http://localhost:8080/usuarios/autenticar', {
+            email: this.state.email,
+            senha: this.state.senha
+        }).then( response => {
+            console.log(response)
+        }).catch( erro => {
+            console.log(erro.response)
+        } )
     }
 
+    prepareCadastrar = () => {
+        this.props.history.push('/cadastro-usuarios')
+    }
 
     render() {
         return (
-            <div className="row" >
+            <div className="row">
                 <div className="col-md-6 offset-md-3">
                     <div className="bs-docs-section">
                         <Card title="Login">
@@ -44,17 +55,17 @@ class Login extends React.Component {
                                                     placeholder="Password" />
                                             </FormGroup>
                                             <br />
-                                            <button className="btn btn-success">
+                                            <button onClick={this.entrar} className="btn btn-success">
                                                 <i className="pi pi-sign-in"></i>Entrar</button>
-                                            <button 
+                                            <button onClick={this.prepareCadastrar}
                                                 className="btn btn-danger"><i className="pi pi-plus"></i>Cadastrar</button>
                                         </fieldset>
                                     </div>
                                 </div>
                             </div>
                         </Card>
-                    </div>
-                </div>
+                     </div>
+                 </div>
             </div>
         )
     }
@@ -62,4 +73,4 @@ class Login extends React.Component {
 
 // Login.contextType = AuthContext;
 
-export default Login
+export default withRouter(Login)
