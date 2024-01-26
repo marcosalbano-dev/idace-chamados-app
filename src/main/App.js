@@ -12,7 +12,7 @@ class App extends React.Component {
     return (
       <>
       <NavBar />
-        <div className='container'>
+        <div className="container">
           <Rotas />
         </div>
       </>
