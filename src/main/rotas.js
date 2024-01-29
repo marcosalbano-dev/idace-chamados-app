@@ -5,6 +5,7 @@ import LandingPage from '../views/landingPage';
 
 import {  Route, Switch, BrowserRouter } from 'react-router-dom';
 import Home from "../views/home";
+import ConsultaLancamentos from "../views/lancamentos/consulta-lancamentos";
 
 function Rotas() {
     return (
@@ -14,6 +15,7 @@ function Rotas() {
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/home" component={Home} />
                 <Route exact path="/cadastro-usuarios" component={CadastroUsuario} />
+                <Route exact path="/consulta-lancamentos" component={ConsultaLancamentos} />
             </Switch>
         </BrowserRouter>
     )

@@ -1,5 +1,7 @@
 ﻿import React from 'react'
+import logo from '../img/logo.png';
 import { withRouter } from 'react-router-dom'
+
 
 class LandingPage extends React.Component {
 
@@ -9,10 +11,14 @@ class LandingPage extends React.Component {
 
     render(){
         return (
+
             <div className="container text-center" >
-                <h2>Bem vindo ao sistema Idace Chamados</h2>
+                <img src={logo} alt="IDACE" />
+                <h2>Bem vindo ao Sistema Idace Chamados</h2>
                 Este é seu sistema para controle de chamados do IDACE,
                 clique no botão abaixo para acessar o sistema: < br/>< br/>
+
+                
 
                 <div className="offset-md-4 col-md-4">
                     <button style={{ width: '100%' }} 

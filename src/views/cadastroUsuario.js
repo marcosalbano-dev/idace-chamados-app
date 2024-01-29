@@ -2,6 +2,8 @@ import React from "react";
 import Card from '../components/card'
 import FormGroup from "../components/form-group";
 import { withRouter } from 'react-router-dom'
+import { mensagemErro, mensagemSucesso } from "../components/toastr";
+import UsuarioService from "../app/service/usuarioService";
 
 class CadastroUsuario extends React.Component {
 
@@ -10,6 +12,64 @@ class CadastroUsuario extends React.Component {
         email: '',
         senha: '',
         senhaRepeticao: ''
+    }
+
+    constructor(){
+        super();
+        this.service = new UsuarioService();
+    }
+
+    validar(){
+        const erros = []
+
+        if(!this.state.nome){
+            erros.push('O campo Nome é obrigatório')
+        }
+
+        if(!this.state.email){
+            erros.push('O campo Email é obrigatório')
+        } else if(!this.state.email.match(/^[a-z0-9]+@[a-z0-9]+\.[a-z]/)){
+            erros.push('Informe um Email válido')
+        }
+        
+        if(!this.state.senha || !this.state.senhaRepeticao){
+            erros.push('Digite a senha 2x.')
+        } else if(this.state.senha !== this.state.senhaRepeticao){
+            erros.push('As senhas não batem.')
+        }
+
+        // if(erros && erros.length > 0){
+        //     throw new ErroValidacao(erros);
+        // }
+    }
+
+
+
+    cadastrar = () => {
+        // const { nome, email, senha, senhaRepeticao } = this.state;
+        // const usuario = { nome, email, senha, senhaRepeticao }
+        const usuario = {
+            nome: this.state.nome,
+            email: this.state.email,
+            senha: this.state.senha
+        }
+
+        try {
+            this.service.validar(usuario)
+        } catch (erro) {
+            const msgs = erro.mensagens;
+            msgs.forEach(msg => mensagemErro(msg));
+            return false;
+        }
+
+        this.service.salvar(usuario)
+            .then(response => {
+                mensagemSucesso('Usuário cadastrado com sucesso! Faça o login para acessar o sistema.')
+                this.props.history.push('/login')
+            }).catch(error => {
+                mensagemErro(error.response.data)
+            })
+
     }
 
     cancelar = () => {
@@ -74,4 +134,4 @@ class CadastroUsuario extends React.Component {
 
 // Login.contextType = AuthContext;
 
-export default CadastroUsuario
+export default withRouter(CadastroUsuario)
