@@ -5,7 +5,7 @@
   "homepage": ".",
   "dependencies": {
     "axios": "^0.19.2",
-    "bootswatch": "^4.3.1",
+    "bootswatch": "^5.3.3",
     "classnames": "^2.2.6",
     "currency-formatter": "^1.5.5",
     "jsonwebtoken": "^8.5.1",

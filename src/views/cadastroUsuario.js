@@ -28,7 +28,7 @@ class CadastroUsuario extends React.Component {
 
         if(!this.state.email){
             erros.push('O campo Email é obrigatório')
-        } else if(!this.state.email.match(/^[a-z0-9]+@[a-z0-9]+\.[a-z]/)){
+        } else if(!this.state.email.match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})$/i)){
             erros.push('Informe um Email válido')
         }
         
@@ -73,7 +73,7 @@ class CadastroUsuario extends React.Component {
     }
 
     cancelar = () => {
-        this.props.history.push("/login")
+        this.props.history.push('/login')
     }
 
     render() {
@@ -134,4 +134,5 @@ class CadastroUsuario extends React.Component {
 
 // Login.contextType = AuthContext;
 
+// withRouter tem a prorpriedade history, utilizada para navegar entre os componentes
 export default withRouter(CadastroUsuario)

@@ -31,6 +31,7 @@ class Login extends React.Component {
         } )
     }
 
+    // Navegar entre componentes
     prepareCadastrar = () => {
         this.props.history.push('/cadastro-usuarios')
     }
@@ -85,4 +86,5 @@ class Login extends React.Component {
 
 // Login.contextType = AuthContext;
 
+// withRouter tem a prorpriedade history, utilizada para navegar entre os componentes
 export default withRouter(Login)
