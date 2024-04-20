@@ -28,9 +28,13 @@ export default class LancamentoService extends ApiService {
     obterListaTipos() {
         return [
             { label: 'Selecione...', value: '' },
-            { label: 'Desenvolvimento', value: 'DESENVOLVIMENTO' },
-            { label: 'Rede', value: 'REDE' },
-            { label: 'Suporte', value: 'SUPORTE' }
+            { label: 'Chamado para o SIGA', value: 'SIGA' },
+            { label: 'Chamado para o TITULA', value: 'TITULA' },
+            { label: 'Chamado para o SERVIÇO DE EMAIL', value: 'EMAIL' },
+            { label: 'Chamado para o SERVIÇO DE REDE', value: 'REDE' },
+            { label: 'Chamado para RELATÓRIOS GERENCIAIS', value: 'RELATORIOS' },
+            { label: 'Chamado para MANUTENÇÃO E SUPORTE', value: 'SUPORTE' },
+            { label: 'Chamado para SERVIÇO DA EMPRESA TOPODATUM', value: 'TOPODATUM' }
         ]
     }
 
@@ -54,9 +58,9 @@ export default class LancamentoService extends ApiService {
         if (!lancamento.descricao) {
             erros.push("Informe a descrição")
         }
-        if (!lancamento.valor) {
-            erros.push("Informe o valor")
-        }
+        // if (!lancamento.valor) {
+        //     erros.push("Informe o valor")
+        // }
         if (!lancamento.tipo) {
             erros.push("Informe o tipo")
         }

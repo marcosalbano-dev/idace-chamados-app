@@ -3,11 +3,7 @@ import { withRouter } from 'react-router-dom'
 import Card from "../../components/card"
 import FormGroup from "../../components/form-group"
 import SelectMenu from "../../components/selectMenu"
-import LancamentosTable from '../lancamentosTable'
-
-
-
-
+import LancamentosTable from "./lancamentosTable"
 class ConsultaLancamentos extends React.Component {
 
     state = {
@@ -40,9 +36,14 @@ class ConsultaLancamentos extends React.Component {
 
         const tipos = [
             { label: 'Selecione...', value: '' },
-            { label: 'Desenvolvimento', value: 'DESENVOLVIMENTO' },
-            { label: 'Rede', value: 'REDE' },
-            { label: 'Suporte', value: 'SUPORTE' }
+            { label: 'Chamado para o SIGA', value: 'SIGA' },
+            { label: 'Chamado para o TITULA', value: 'TITULA' },
+            { label: 'Chamado para o SERVIÇO DE EMAIL', value: 'EMAIL' },
+            { label: 'Chamado para o SERVIÇO DE REDE', value: 'REDE' },
+            { label: 'Chamado para RELATÓRIOS GERENCIAIS', value: 'RELATORIOS' },
+            { label: 'Chamado para MANUTENÇÃO E SUPORTE', value: 'SUPORTE' },
+            { label: 'Chamado para SERVIÇO DA EMPRESA TOPODATUM', value: 'TOPODATUM' }
+
         ]
 
         return (

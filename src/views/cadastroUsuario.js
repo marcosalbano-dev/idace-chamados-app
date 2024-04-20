@@ -41,6 +41,8 @@ class CadastroUsuario extends React.Component {
         // if(erros && erros.length > 0){
         //     throw new ErroValidacao(erros);
         // }
+
+        return erros;
     }
 
 
@@ -59,7 +61,7 @@ class CadastroUsuario extends React.Component {
         } catch (erro) {
             const msgs = erro.mensagens;
             msgs.forEach(msg => mensagemErro(msg));
-            return false;
+            return msgs;
         }
 
         this.service.salvar(usuario)

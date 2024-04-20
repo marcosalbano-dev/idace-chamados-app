@@ -19,7 +19,7 @@ function NavBar(props) {
                     <ul className="navbar-nav">
                         <NavBarItem render={props} href="/home" label="Home" />
                         <NavBarItem render={props} href="/cadastro-usuarios" label="Usuários" />
-                        <NavBarItem render={props} href="/consulta-lancamentos" label="Lançamentos" />
+                        <NavBarItem render={props} href="/consulta-lancamentos" label="Chamados" />
                         <NavBarItem render={props} href="/login" label="Sair" />
                     </ul>
                 </div>

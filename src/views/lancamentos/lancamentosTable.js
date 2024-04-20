@@ -2,7 +2,6 @@
 // import currencyFormatter from 'currency-formatter'
 import 'primeicons/primeicons.css';
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default props => {
 
     const rows = props.lancamentos.map(lancamento => {
