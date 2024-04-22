@@ -4,6 +4,10 @@ import Card from "../../components/card"
 import FormGroup from "../../components/form-group"
 import SelectMenu from "../../components/selectMenu"
 import LancamentosTable from "./lancamentosTable"
+import LancamentoService from "../../app/service/lancamentoService"
+
+import LocalStorageService from '../../app/service/localstorageService'
+
 class ConsultaLancamentos extends React.Component {
 
     state = {
@@ -14,6 +18,41 @@ class ConsultaLancamentos extends React.Component {
         showConfirmDialog: false,
         lancamentoDeletar: {},
         lancamentos: []
+    }
+
+    constructor(){
+        super();
+        this.service = new LancamentoService();
+    }
+
+    buscar = () => {
+        // if (!this.state.ano) {
+        //     //messages.mensagemErro('O preenchimento do campo Ano é obrigatório')
+        //     return false;
+        // }
+
+        const usuarioLogado = LocalStorageService.obterItem('_usuario_logado')
+
+        const lancamentoFiltro = {
+            ano: this.state.ano,
+            mes: this.state.mes,
+            dia: this.state.dia,
+            tipo: this.state.tipo,
+            descricao: this.state.descricao,
+            usuario: usuarioLogado.id
+        }
+
+        this.service
+            .consultar(lancamentoFiltro)
+            .then(resposta => {
+                // const lista = resposta.data;
+                // if(lista.length < 1){
+                //     //messages.mensagemAlerta("Nenhum resultado encontrado.")
+                // }
+                this.setState({ lancamentos: resposta.data })
+            }).catch(error => {
+                console.log(error)
+            })
     }
 
     render() {
