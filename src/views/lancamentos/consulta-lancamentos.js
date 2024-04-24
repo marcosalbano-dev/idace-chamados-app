@@ -7,6 +7,10 @@ import LancamentosTable from "./lancamentosTable"
 import LancamentoService from "../../app/service/lancamentoService"
 
 import LocalStorageService from '../../app/service/localstorageService'
+import * as messages from '../../components/toastr'
+import { Dialog } from 'primereact/dialog';
+import { Button } from 'primereact/button';
+
 
 class ConsultaLancamentos extends React.Component {
 
@@ -26,18 +30,19 @@ class ConsultaLancamentos extends React.Component {
     }
 
     buscar = () => {
-        // if (!this.state.ano) {
-        //     //messages.mensagemErro('O preenchimento do campo Ano é obrigatório')
-        //     return false;
-        // }
+        if (!this.state.ano) {
+            messages.mensagemErro('O preenchimento do campo Ano é obrigatório')
+            return false;
+        }
 
         const usuarioLogado = LocalStorageService.obterItem('_usuario_logado')
 
         const lancamentoFiltro = {
             ano: this.state.ano,
             mes: this.state.mes,
-            dia: this.state.dia,
+            data_cadastro: this.state.data_cadastro,
             tipo: this.state.tipo,
+            setor: this.state.setor,
             descricao: this.state.descricao,
             usuario: usuarioLogado.id
         }
@@ -45,45 +50,50 @@ class ConsultaLancamentos extends React.Component {
         this.service
             .consultar(lancamentoFiltro)
             .then(resposta => {
-                // const lista = resposta.data;
-                // if(lista.length < 1){
-                //     //messages.mensagemAlerta("Nenhum resultado encontrado.")
-                // }
+                const lista = resposta.data;
+                if(lista.length < 1){
+                    messages.mensagemAlerta("Nenhum resultado encontrado.")
+                }
                 this.setState({ lancamentos: resposta.data })
             }).catch(error => {
                 console.log(error)
             })
     }
 
+    abrirConfirmacao = (lancamento) => {
+        this.setState({ showConfirmDialog: true, lancamentoDeletar: lancamento })
+    }
+
+    cancelarDelecao = (lancamento) => {
+        this.setState({ showConfirmDialog: false, lancamentoDeletar: {} })
+    }
+
+    deletar = () => {
+        this.service
+            .deletar(this.state.lancamentoDeletar.id)
+            .then(response => {
+                const lancamentos = this.state.lancamentos;
+                const index = lancamentos.indexOf(this.state.lancamentoDeletar)
+                lancamentos.splice(index, 1)
+                this.setState({ lancamentos: lancamentos, showConfirmDialog: false })
+                messages.mensagemSucesso('Lançamento deletado com sucesso!')
+            }).catch(error => {
+                messages.mensagemErro('Ocorreu um erro ao tentar deletar o Lançamento.')
+            })
+    }
+
     render() {
 
-        const meses = [
-            { label: 'Selecione...', value: '' },
-            { label: 'Janeiro', value: 1 },
-            { label: 'Fevereiro', value: 2 },
-            { label: 'Março', value: 3 },
-            { label: 'Abril', value: 4 },
-            { label: 'Maio', value: 5 },
-            { label: 'Junho', value: 6 },
-            { label: 'Julho', value: 7 },
-            { label: 'Agosto', value: 8 },
-            { label: 'Setembro', value: 9 },
-            { label: 'Outubro', value: 10 },
-            { label: 'Novembro', value: 11 },
-            { label: 'Dezembro', value: 12 },
-        ]
+        const meses = this.service.obterListaMeses();
+        const tipos = this.service.obterListaTipos();
 
-        const tipos = [
-            { label: 'Selecione...', value: '' },
-            { label: 'Chamado para o SIGA', value: 'SIGA' },
-            { label: 'Chamado para o TITULA', value: 'TITULA' },
-            { label: 'Chamado para o SERVIÇO DE EMAIL', value: 'EMAIL' },
-            { label: 'Chamado para o SERVIÇO DE REDE', value: 'REDE' },
-            { label: 'Chamado para RELATÓRIOS GERENCIAIS', value: 'RELATORIOS' },
-            { label: 'Chamado para MANUTENÇÃO E SUPORTE', value: 'SUPORTE' },
-            { label: 'Chamado para SERVIÇO DA EMPRESA TOPODATUM', value: 'TOPODATUM' }
-
-        ]
+        const confirmDialogFooter = (
+            <div>
+                <Button label="Confirmar" icon="pi pi-check" onClick={this.deletar} autoFocus />
+                <Button label="Cancelar" icon="pi pi-times" onClick={this.cancelarDelecao}
+                    className="p-button-text" />
+            </div>
+        );
 
         return (
             <Card title="Consulta Chamados">
@@ -142,14 +152,13 @@ class ConsultaLancamentos extends React.Component {
                     <div className="col-md-12">
                         <div className="bs-component">
                             <LancamentosTable lancamentos={this.state.lancamentos}
-                                // deletarLancamento={this.abrirConfirmacao}
-                                // editarLancamento={this.editar} 
-                                // alterarStatus={this.alterarStatus} />
-                                />
+                                deletarLancamento={this.abrirConfirmacao}
+                                editarLancamento={this.editar} 
+                                alterarStatus={this.alterarStatus} />
                         </div>
                     </div>
                 </div>
-                {/* <div>
+                <div>
                     <Dialog header="Confirmação"
                         visible={this.state.showConfirmDialog}
                         style={{ width: '50vw' }}
@@ -160,7 +169,7 @@ class ConsultaLancamentos extends React.Component {
                             Confirma a exclusão desse Lançamento?
                         </p>
                     </Dialog>
-                </div> */}
+                </div>
             </Card>
         )
     }

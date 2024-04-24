@@ -28,13 +28,36 @@ export default class LancamentoService extends ApiService {
     obterListaTipos() {
         return [
             { label: 'Selecione...', value: '' },
-            { label: 'Chamado para o SIGA', value: 'SIGA' },
-            { label: 'Chamado para o TITULA', value: 'TITULA' },
-            { label: 'Chamado para o SERVIÇO DE EMAIL', value: 'EMAIL' },
-            { label: 'Chamado para o SERVIÇO DE REDE', value: 'REDE' },
-            { label: 'Chamado para RELATÓRIOS GERENCIAIS', value: 'RELATORIOS' },
-            { label: 'Chamado para MANUTENÇÃO E SUPORTE', value: 'SUPORTE' },
+            { label: 'Chamado para o SIGA', value: 'SERVIÇO NO SIGA' },
+            { label: 'Chamado para o TITULA', value: 'SERVIÇO NO TITULA' },
+            { label: 'Chamado para o SERVIÇO DE EMAIL', value: 'SERVIÇO DE EMAIL' },
+            { label: 'Chamado para o SERVIÇO DE REDE', value: 'SERVIÇO DE REDE' },
+            { label: 'Chamado para RELATÓRIOS GERENCIAIS', value: 'RELATÓRIOS GERENCIAIS' },
+            { label: 'Chamado para MANUTENÇÃO E SUPORTE', value: 'MANUTENÇÃO E SUPORTE' },
             { label: 'Chamado para SERVIÇO DA EMPRESA TOPODATUM', value: 'TOPODATUM' }
+        ]
+    }
+
+    obterListaSetores() {
+        return [
+            { label: 'Selecione...', value: '' },
+            { label: 'ADINS - Assesoria de Desenvolvimento Institucional', value: 'ADINS' },
+            { label: 'ASSEJUR - Assessoria Jurídica', value: 'ASSEJUR' },
+            { label: 'DIAF - Diretoria Administrativo-Financeira', value: 'DIAF' },
+            { label: 'DITEO - Diretoria Técnica e de Operações', value: 'DITEO' },
+            { label: 'GEAD - Gerência de Administração', value: 'GEAD' },
+            { label: 'GEDEF - Gerência de Desenvolvimento Fundiário', value: 'GEDEF' },
+            { label: 'GEGEF - Gerência de Gestão Fundiária', value: 'GEGEF' },
+            { label: 'GEGEO - Gerência de Cartografia, Geoprocessamento e Diagnóstico Fundiário', value: 'GEGEO' },
+            { label: 'NECAF - Núcleo Estudos, Cadastro e Levantamento Fundiário', value: 'NECAF' },
+            { label: 'NUART - Núcleo de Apoio a Assentamentos, Reassentamentos Rurais e Acesso a Terra', value: 'NUART' },
+            { label: 'NUPAF - Núcleo de Titulação e Patrimônio Fundiário', value: 'NUPAF' },
+            { label: 'NUGEP - Núcleo de Gestão de Pessoas', value: 'NUGEP' },
+            { label: 'OUVID - Ouvidoria', value: 'OUVID' },
+            { label: 'SUPER - Superintendência', value: 'SUPER' },
+            { label: 'SUPAD - Superintendência Adjunta', value: 'SUPAD' },
+            { label: 'UNITI - Unidade de Tecnologia da Informação', value: 'UNITI' }
+
         ]
     }
 
@@ -58,11 +81,14 @@ export default class LancamentoService extends ApiService {
         if (!lancamento.descricao) {
             erros.push("Informe a descrição")
         }
-        // if (!lancamento.valor) {
-        //     erros.push("Informe o valor")
-        // }
+        if (!lancamento.setor) {
+            erros.push("Informe o setor")
+        }
         if (!lancamento.tipo) {
             erros.push("Informe o tipo")
+        }
+        if (!lancamento.data_cadastro) {
+            erros.push("Informe a da ta do cadastro")
         }
 
         if (erros && erros.length > 0) {
@@ -99,6 +125,10 @@ export default class LancamentoService extends ApiService {
 
         if (lancamentoFiltro.descricao) {
             params = `${params}&descricao=${lancamentoFiltro.descricao}`
+        }
+
+        if (lancamentoFiltro.setor) {
+            params = `${params}&setor=${lancamentoFiltro.setor}`
         }
 
         return this.get(params)
