@@ -19,49 +19,19 @@ class CadastroUsuario extends React.Component {
         this.service = new UsuarioService();
     }
 
-    validar(){
-        const erros = []
-
-        if(!this.state.nome){
-            erros.push('O campo Nome é obrigatório')
-        }
-
-        if(!this.state.email){
-            erros.push('O campo Email é obrigatório')
-        } else if(!this.state.email.match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})$/i)){
-            erros.push('Informe um Email válido')
-        }
-        
-        if(!this.state.senha || !this.state.senhaRepeticao){
-            erros.push('Digite a senha 2x.')
-        } else if(this.state.senha !== this.state.senhaRepeticao){
-            erros.push('As senhas não batem.')
-        }
-
-        // if(erros && erros.length > 0){
-        //     throw new ErroValidacao(erros);
-        // }
-
-        return erros;
-    }
-
-
-
     cadastrar = () => {
-        // const { nome, email, senha, senhaRepeticao } = this.state;
-        // const usuario = { nome, email, senha, senhaRepeticao }
-        const usuario = {
-            nome: this.state.nome,
-            email: this.state.email,
-            senha: this.state.senha
-        }
+
+        const { nome, email, senha, senhaRepeticao } = this.state;
+        const usuario = { nome, email, senha, senhaRepeticao }
 
         try {
             this.service.validar(usuario)
+            
         } catch (erro) {
             const msgs = erro.mensagens;
+            console.log(msgs)
             msgs.forEach(msg => mensagemErro(msg));
-            return msgs;
+            return false;
         }
 
         this.service.salvar(usuario)

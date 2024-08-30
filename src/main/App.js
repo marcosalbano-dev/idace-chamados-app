@@ -1,6 +1,7 @@
 import React from 'react';
 import Rotas from './rotas';
 import NavBar from '../components/navbar';
+import ProvedorAutenticacao from './provedorAutenticacao'
 
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 
@@ -14,12 +15,12 @@ class App extends React.Component {
 
   render() {
     return (
-      <>
-      <NavBar />
-        <div className="container">
-          <Rotas />
-        </div>
-      </>
+      <ProvedorAutenticacao>
+        <NavBar />
+          <div className="container">
+            <Rotas />
+          </div>
+        </ProvedorAutenticacao>
     )
   }
 }

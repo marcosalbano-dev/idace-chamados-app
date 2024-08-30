@@ -18,6 +18,7 @@ class CadastroLancamentos extends React.Component {
         ano: '',
         tipo: '',
         status: '',
+        data_cadastro:'',
         usuario: null,
         atualizando: false
 
@@ -47,9 +48,9 @@ class CadastroLancamentos extends React.Component {
     submit = () => {
         const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
 
-        const { descricao, valor, mes, ano, tipo } = this.state;
-        const lancamento = { descricao, valor, mes, ano, tipo, usuario: usuarioLogado.id };
-
+        const { descricao, setor, mes, ano, tipo, data_cadastro } = this.state;
+        const lancamento = { descricao, setor, mes, ano, tipo, data_cadastro, usuario: usuarioLogado.id };
+        // status,
         try {
             this.service.validar(lancamento)
         } catch (erro) {
@@ -57,26 +58,26 @@ class CadastroLancamentos extends React.Component {
             mensagens.forEach(msg => messages.mensagemErro(msg));
             return false;
         }
-
+        //console.log(lancamento)
         this.service
             .salvar(lancamento)
             .then(response => {
                 this.props.history.push('/consulta-lancamentos')
-                messages.mensagemSucesso('Lançamento cadastrado com sucesso!')
+                messages.mensagemSucesso('Chamado cadastrado com sucesso!')
             }).catch(error => {
                 messages.mensagemErro(error.response.data)
             })
     }
 
     atualizar = () => {
-        const { descricao, valor, mes, ano, tipo, status, usuario, id } = this.state;
-        const lancamento = { descricao, valor, mes, ano, tipo, usuario, status, id };
+        const { descricao, setor, mes, ano, tipo,  status, usuario, id, data_cadastro } = this.state;
+        const lancamento = { descricao, setor, mes, ano, tipo, usuario, status, id, data_cadastro };
 
         this.service
             .atualizar(lancamento)
             .then(response => {
                 this.props.history.push('/consulta-lancamentos')
-                messages.mensagemSucesso('Lançamento atualizado com sucesso!')
+                messages.mensagemSucesso('Chamado atualizado com sucesso!')
             }).catch(error => {
                 messages.mensagemErro(error.response.data)
             })
@@ -94,6 +95,7 @@ class CadastroLancamentos extends React.Component {
         const tipos = this.service.obterListaTipos();
         const meses = this.service.obterListaMeses();
         const setores = this.service.obterListaSetores();
+        const status = this.service.obterListaStatus();
 
         return (
             <Card title={this.state.atualizando ? 'Atualização de Chamado' : 'Cadastro de Chamado'}>
@@ -121,17 +123,6 @@ class CadastroLancamentos extends React.Component {
                     </div>
                     <br />
                     <div className="col-md-6">
-                        <FormGroup id="inputStatus" label="Status: *">
-                            <input type="text"
-                                className="form-control"
-                                name="status"
-                                value={this.state.status}
-                                disabled />
-                        </FormGroup>
-                    </div>
-                </div>
-                <br />
-                    <div className="col-md-6">
                         <FormGroup id="inputMes" label="Mes: *">
                             <SelectMenu id="inputMes"
                                 lista={meses}
@@ -141,7 +132,8 @@ class CadastroLancamentos extends React.Component {
                                 onChange={this.handleChange} />
                         </FormGroup>
                     </div>
-                <br />
+                </div>
+                
                 <br />
                 <div className="row">
                     <div className="col-md-6">
@@ -164,8 +156,30 @@ class CadastroLancamentos extends React.Component {
                                 onChange={this.handleChange} />
                         </FormGroup>
                     </div>
-                    <br />
                 </div>
+                <br />
+                <div className="row">
+                    {/* <div className="col-md-6">
+                           <FormGroup id="inputDataCadastro" label="Data do Cadastro: *">
+                                <input id="inputDataCadastro" 
+                                    className="form-control"
+                                    name="data_cadastro"
+                                    value={this.state.data_cadastro}
+                                    onChange={this.handleChange} />
+                            </FormGroup>
+                    </div> */}
+                    <div className="col-md-6">
+                        <FormGroup id="inputStatus" label="Status: *">
+                        <input type="text" 
+                                    className="form-control" 
+                                    name="status"
+                                    value={this.state.status}    
+                                    disabled />
+                        </FormGroup>
+                    </div>
+                </div>
+                
+                
                 <br /><br />
                 <div className="row">
                     <div className="col-md-6">

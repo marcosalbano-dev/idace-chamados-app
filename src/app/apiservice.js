@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-// const baseURL = process.env.REACT_APP_API_URL
-const baseURL = 'http://localhost:8080'
+ const baseURL = process.env.REACT_APP_API_URL
+//const baseURL = 'http://localhost:8080'
 
 const httpClient = axios.create({
     baseURL: baseURL,
-    // withCredentials: true
+    withCredentials: true
 })
 
 class ApiService {
@@ -14,11 +14,11 @@ class ApiService {
         this.apiurl = apiurl
     }
 
-    // static registrarToken(token){
-    //     if(token){
-    //         httpClient.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    //     }
-    // }
+    static registrarToken(token){
+        if(token){
+            httpClient.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        }
+    }
 
     post(url, objeto){
         const requestUrl = `${this.apiurl}${url}`

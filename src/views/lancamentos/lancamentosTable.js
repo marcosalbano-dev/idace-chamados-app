@@ -1,11 +1,13 @@
 ﻿import React from 'react'
-// import currencyFormatter from 'currency-formatter'
+//import currencyFormatter from 'currency-formatter'
 import 'primeicons/primeicons.css';
-import consultaLancamentos from './consulta-lancamentos';
+import moment from 'moment';
+
 
 export default props => {
-
-    const rows = props.lancamentos.map(lancamento => {
+        
+        const rows = props.lancamentos.map(lancamento => {
+        const formattedDate = moment(lancamento.dataCadastro).format('DD/MM/YYYY')
         return (
             <tr key={lancamento.id}>
                 <td>{lancamento.usuario.nome}</td>
@@ -15,19 +17,20 @@ export default props => {
                 <td>{lancamento.tipo}</td>
                 <td>{lancamento.mes}</td>
                 <td>{lancamento.status}</td>
+                <td>{formattedDate}</td>
                 <td>
-                    {/* <button className="btn btn-success" title="Efetivar"
-                        disabled={ lancamento.status !== 'PENDENTE'}
-                        onClick={e => props.alterarStatus(lancamento, 'EFETIVADO')}
+                    <button className="btn btn-success" title="Atender"
+                        disabled={ lancamento.status == 'ATENDIDO' }
+                        onClick={e => props.alterarStatus(lancamento, 'ATENDIDO')}
                         type="button">
                         <i className="pi pi-check"></i>
-                    </button> */}
-                    {/* <button className="btn btn-warning" title="Cancelar"
-                        disabled={ lancamento.status !== 'PENDENTE'}
-                        onClick={e => props.alterarStatus(lancamento, 'CANCELADO')}
+                    </button> 
+                    <button className="btn btn-warning" title="Progresso"
+                        disabled={ lancamento.status == 'ATENDIDO'}
+                        onClick={e => props.alterarStatus(lancamento, 'PROGRESSO')}
                         type="button">
-                        <i className="pi pi-times"></i>
-                    </button> */}
+                        <i className="pi pi-sync"></i>
+                    </button> 
                     <button type="button" title="Editar"
                         className="btn btn-primary"
                         onClick={e => props.editarLancamento(lancamento.id)}>
@@ -53,7 +56,8 @@ export default props => {
                     {/* <th scope="col">Valor</th> */}
                     <th scope="col">Tipo</th>
                     <th scope="col">Mês</th>
-                    <th scope="col">Situação</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Data</th>
                     <th scope="col">Ações</th>
                 </tr>
             </thead>

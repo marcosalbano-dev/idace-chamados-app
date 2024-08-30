@@ -18,7 +18,9 @@ class ConsultaLancamentos extends React.Component {
         ano: '',
         mes: '',
         tipo: '',
+        setor: '',
         descricao: '',
+        dataCadastro: '',
         showConfirmDialog: false,
         lancamentoDeletar: {},
         lancamentos: []
@@ -30,20 +32,21 @@ class ConsultaLancamentos extends React.Component {
     }
 
     buscar = () => {
+        console.log(this.state)
         if (!this.state.ano) {
             messages.mensagemErro('O preenchimento do campo Ano é obrigatório')
             return false;
         }
 
         const usuarioLogado = LocalStorageService.obterItem('_usuario_logado')
-
+        //console.log(usuarioLogado)
         const lancamentoFiltro = {
             ano: this.state.ano,
             mes: this.state.mes,
-            data_cadastro: this.state.data_cadastro,
             tipo: this.state.tipo,
             setor: this.state.setor,
             descricao: this.state.descricao,
+            dataCadastro: this.state.dataCadastro,
             usuario: usuarioLogado.id
         }
 
@@ -60,11 +63,16 @@ class ConsultaLancamentos extends React.Component {
             })
     }
 
+  
+    editar = (id) => {
+        this.props.history.push(`/cadastro-lancamentos/${id}`)
+    }
+
     abrirConfirmacao = (lancamento) => {
         this.setState({ showConfirmDialog: true, lancamentoDeletar: lancamento })
     }
 
-    cancelarDelecao = (lancamento) => {
+    cancelarDelecao = () => {
         this.setState({ showConfirmDialog: false, lancamentoDeletar: {} })
     }
 
@@ -76,16 +84,36 @@ class ConsultaLancamentos extends React.Component {
                 const index = lancamentos.indexOf(this.state.lancamentoDeletar)
                 lancamentos.splice(index, 1)
                 this.setState({ lancamentos: lancamentos, showConfirmDialog: false })
-                messages.mensagemSucesso('Lançamento deletado com sucesso!')
+                messages.mensagemSucesso('Chamado deletado com sucesso!')
             }).catch(error => {
-                messages.mensagemErro('Ocorreu um erro ao tentar deletar o Lançamento.')
+                messages.mensagemErro('Ocorreu um erro ao tentar deletar o Chamado.')
+            })
+    }
+
+    preparaFormularioCadastro = () => {
+        this.props.history.push('/cadastro-lancamentos')
+    }
+
+    alterarStatus = (lancamento, status) => {
+        this.service
+            .alterarStatus(lancamento.id, status)
+            .then( response => {
+                const lancamentos = this.state.lancamentos;
+                const index = lancamentos.indexOf(lancamento);
+                if(index !== -1){
+                    lancamento['status'] = status;
+                    lancamentos[index] = lancamento
+                    this.setState({ lancamento });
+                }
+                messages.mensagemSucesso("Status atualizado com sucesso!")
             })
     }
 
     render() {
-
         const meses = this.service.obterListaMeses();
         const tipos = this.service.obterListaTipos();
+        const setores = this.service.obterListaSetores();
+        const status = this.service.obterListaStatus();
 
         const confirmDialogFooter = (
             <div>
@@ -117,21 +145,29 @@ class ConsultaLancamentos extends React.Component {
                                     lista={meses} />
                             </FormGroup>
                             <br />
-                            <FormGroup label="Descrição:" htmlFor="inputDescricao">
-                                <input type="text"
-                                    className="form-control"
-                                    id="inputDescricao"
-                                    value={this.state.descricao}
-                                    onChange={e => this.setState({ descricao: e.target.value })}
-                                    placeholder="Digite a Descrição" />
-                            </FormGroup>
-                            <br />
-                            <FormGroup htmlFor="inputTipo" label="Tipo de Chamado: ">
+                            {/* <FormGroup htmlFor="inputTipo" label="Tipo de Chamado: ">
                                 <SelectMenu id="inputTipo"
                                     className='form-control'
                                     value={this.state.tipo}
                                     onChange={e => this.setState({ tipo: e.target.value })}
                                     lista={tipos} />
+                            </FormGroup>
+                            <br />
+                            <FormGroup htmlFor="inputSetor" label="Setor: ">
+                                <SelectMenu id="inputSetor"
+                                    className='form-control'
+                                    value={this.state.setor}
+                                    onChange={e => this.setState({ tipo: e.target.value })}
+                                    lista={setores} />
+                            </FormGroup>
+                            <br />
+                             */}
+                             <FormGroup htmlFor="inputStatus" label="Status: ">
+                                <SelectMenu id="inputStatus"
+                                    className='form-control'
+                                    value={this.state.status}
+                                    onChange={e => this.setState({ tipo: e.target.value })}
+                                    lista={status} />
                             </FormGroup>
                             <br />
                             <button onClick={this.buscar}
@@ -166,7 +202,7 @@ class ConsultaLancamentos extends React.Component {
                         modal={true}
                         onHide={() => this.setState({ showConfirmDialog: false })}>
                         <p className="m-0">
-                            Confirma a exclusão desse Lançamento?
+                            Confirma a exclusão desse Chamado?
                         </p>
                     </Dialog>
                 </div>

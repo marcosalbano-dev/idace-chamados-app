@@ -10,30 +10,30 @@ export default class LancamentoService extends ApiService {
     obterListaMeses() {
         return [
             { label: 'Selecione...', value: '' },
-            { label: 'Janeiro', value: 1 },
-            { label: 'Fevereiro', value: 2 },
-            { label: 'Março', value: 3 },
-            { label: 'Abril', value: 4 },
-            { label: 'Maio', value: 5 },
-            { label: 'Junho', value: 6 },
-            { label: 'Julho', value: 7 },
-            { label: 'Agosto', value: 8 },
-            { label: 'Setembro', value: 9 },
-            { label: 'Outubro', value: 10 },
-            { label: 'Novembro', value: 11 },
-            { label: 'Dezembro', value: 12 },
+            { label: 'Janeiro', value: 'Janeiro' },
+            { label: 'Fevereiro', value: 'Fevereiro' },
+            { label: 'Março', value: 'Março' },
+            { label: 'Abril', value: 'Abril' },
+            { label: 'Maio', value: 'Maio' },
+            { label: 'Junho', value: 'Junho' },
+            { label: 'Julho', value: 'Julho' },
+            { label: 'Agosto', value: 'Agosto' },
+            { label: 'Setembro', value: 'Setembro' },
+            { label: 'Outubro', value: 'Outubro' },
+            { label: 'Novembro', value: 'Novembro' },
+            { label: 'Dezembro', value: 'Dezembro' },
         ]
     }
 
     obterListaTipos() {
         return [
             { label: 'Selecione...', value: '' },
-            { label: 'Chamado para o SIGA', value: 'SERVIÇO NO SIGA' },
-            { label: 'Chamado para o TITULA', value: 'SERVIÇO NO TITULA' },
-            { label: 'Chamado para o SERVIÇO DE EMAIL', value: 'SERVIÇO DE EMAIL' },
-            { label: 'Chamado para o SERVIÇO DE REDE', value: 'SERVIÇO DE REDE' },
-            { label: 'Chamado para RELATÓRIOS GERENCIAIS', value: 'RELATÓRIOS GERENCIAIS' },
-            { label: 'Chamado para MANUTENÇÃO E SUPORTE', value: 'MANUTENÇÃO E SUPORTE' },
+            { label: 'Chamado para o SIGA', value: 'SIGA' },
+            { label: 'Chamado para o TITULA', value: 'TITULA' },
+            { label: 'Chamado para o SERVIÇO DE EMAIL', value: 'EMAIL' },
+            { label: 'Chamado para o SERVIÇO DE REDE', value: 'REDE' },
+            { label: 'Chamado para RELATÓRIOS GERENCIAIS', value: 'RELATORIOS' },
+            { label: 'Chamado para MANUTENÇÃO E SUPORTE', value: 'SUPORTE' },
             { label: 'Chamado para SERVIÇO DA EMPRESA TOPODATUM', value: 'TOPODATUM' }
         ]
     }
@@ -61,6 +61,15 @@ export default class LancamentoService extends ApiService {
         ]
     }
 
+    obterListaStatus() {
+        return [
+            { label: 'Selecione...', value: '' },
+            { label: 'ABERTO', value: 'ABERTO' },
+            { label: 'PROGRESSO', value: 'PROGRESSO' },
+            { label: 'ATENDIDO', value: 'ATENDIDO' }
+        ]
+    }
+
     obterPorId(id) {
         return this.get(`/${id}`);
     }
@@ -69,27 +78,32 @@ export default class LancamentoService extends ApiService {
         return this.put(`/${id}/atualiza-status`, { status })
     }
 
+   
     validar(lancamento) {
         const erros = [];
+
+        if (!lancamento.descricao) {
+            erros.push("Informe a descrição")
+        }
+
+        if (!lancamento.mes) {
+            erros.push("Informe o mês")
+        }
 
         if (!lancamento.ano) {
             erros.push("Informe o ano")
         }
-        if (!lancamento.mes) {
-            erros.push("Informe o mês")
-        }
-        if (!lancamento.descricao) {
-            erros.push("Informe a descrição")
-        }
+        
         if (!lancamento.setor) {
             erros.push("Informe o setor")
         }
+
         if (!lancamento.tipo) {
             erros.push("Informe o tipo")
         }
-        if (!lancamento.data_cadastro) {
-            erros.push("Informe a da ta do cadastro")
-        }
+        // if (!lancamento.data_cadastro) {
+        //     erros.push("Informe a data do cadastro")
+        // }
 
         if (erros && erros.length > 0) {
             throw new ErroValidacao(erros);
@@ -107,6 +121,10 @@ export default class LancamentoService extends ApiService {
     consultar(lancamentoFiltro) {
         let params = `?ano=${lancamentoFiltro.ano}`
 
+        if (lancamentoFiltro.descricao) {
+            params = `${params}&descricao=${lancamentoFiltro.descricao}`
+        }
+
         if (lancamentoFiltro.mes) {
             params = `${params}&mes=${lancamentoFiltro.mes}`
         }
@@ -115,16 +133,12 @@ export default class LancamentoService extends ApiService {
             params = `${params}&tipo=${lancamentoFiltro.tipo}`
         }
 
-        if (lancamentoFiltro.status) {
-            params = `${params}&status=${lancamentoFiltro.status}`
-        }
+        // if (lancamentoFiltro.status) {
+        //     params = `${params}&status=${lancamentoFiltro.status}`
+        // }
         
         if (lancamentoFiltro.usuario) {
             params = `${params}&usuario=${lancamentoFiltro.usuario}`
-        }
-
-        if (lancamentoFiltro.descricao) {
-            params = `${params}&descricao=${lancamentoFiltro.descricao}`
         }
 
         if (lancamentoFiltro.setor) {
