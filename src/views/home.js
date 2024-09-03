@@ -16,6 +16,7 @@ class Home extends React.Component {
 
     componentDidMount(){
         const usuarioLogado = this.context.usuarioAutenticado
+        // console.log(usuarioLogado.nome)
         this.usuarioService
             .obterTotalLancamentosPorUsuario(usuarioLogado.id)
             .then( response => {
@@ -32,7 +33,7 @@ class Home extends React.Component {
                 
                 <h1 className="display-3">Bem vindo!</h1>
                 <p className="lead">Esse é o Sistema de Chamados do IDACE.</p>
-                <p className="lead">O seu total de Chamados para o mês atual é de: {this.state.totalLancamentos}</p>
+                <p className="lead">O seu total de Chamados ATENDIDOS para o mês atual é de: {this.state.totalLancamentos}</p>
                 <hr className="my-4" />
                 <p>E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.</p>
                 <p className="lead">

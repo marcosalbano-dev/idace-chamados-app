@@ -34,7 +34,8 @@ export default class LancamentoService extends ApiService {
             { label: 'Chamado para o SERVIÇO DE REDE', value: 'REDE' },
             { label: 'Chamado para RELATÓRIOS GERENCIAIS', value: 'RELATORIOS' },
             { label: 'Chamado para MANUTENÇÃO E SUPORTE', value: 'SUPORTE' },
-            { label: 'Chamado para SERVIÇO DA EMPRESA TOPODATUM', value: 'TOPODATUM' }
+            { label: 'Chamado para SERVIÇO DA EMPRESA TOPODATUM', value: 'TOPODATUM' },
+            { label: 'Chamado para SERVIÇO NO BANCO ACCESS', value: 'BD_ACCESS' }
         ]
     }
 

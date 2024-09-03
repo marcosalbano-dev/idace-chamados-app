@@ -20,6 +20,7 @@ class ConsultaLancamentos extends React.Component {
         tipo: '',
         setor: '',
         descricao: '',
+        status: '',
         dataCadastro: '',
         showConfirmDialog: false,
         lancamentoDeletar: {},
@@ -32,7 +33,7 @@ class ConsultaLancamentos extends React.Component {
     }
 
     buscar = () => {
-        console.log(this.state)
+        //console.log(this.state)
         if (!this.state.ano) {
             messages.mensagemErro('O preenchimento do campo Ano é obrigatório')
             return false;
@@ -47,6 +48,7 @@ class ConsultaLancamentos extends React.Component {
             setor: this.state.setor,
             descricao: this.state.descricao,
             dataCadastro: this.state.dataCadastro,
+            status: this.state.status,
             usuario: usuarioLogado.id
         }
 
@@ -162,13 +164,13 @@ class ConsultaLancamentos extends React.Component {
                             </FormGroup>
                             <br />
                              */}
-                             <FormGroup htmlFor="inputStatus" label="Status: ">
+                             {/* <FormGroup htmlFor="inputStatus" label="Status: ">
                                 <SelectMenu id="inputStatus"
                                     className='form-control'
                                     value={this.state.status}
                                     onChange={e => this.setState({ tipo: e.target.value })}
                                     lista={status} />
-                            </FormGroup>
+                            </FormGroup> */}
                             <br />
                             <button onClick={this.buscar}
                                 type="button"

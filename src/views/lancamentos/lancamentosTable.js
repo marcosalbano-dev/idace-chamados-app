@@ -11,11 +11,12 @@ export default props => {
         return (
             <tr key={lancamento.id}>
                 <td>{lancamento.usuario.nome}</td>
+                <td>{lancamento.cliente}</td>
                 <td>{lancamento.setor}</td>
                 <td>{lancamento.descricao}</td>
                 {/* <td>{currencyFormatter.format(lancamento.valor, { locale: 'pt-BR' })}</td> */}
                 <td>{lancamento.tipo}</td>
-                <td>{lancamento.mes}</td>
+                {/* <td>{lancamento.mes}</td> */}
                 <td>{lancamento.status}</td>
                 <td>{formattedDate}</td>
                 <td>
@@ -51,11 +52,12 @@ export default props => {
             <thead>
                 <tr>
                     <th scope="col">Técnico</th>
+                    <th scope="col">Usuário</th>
                     <th scope="col">Setor</th>
                     <th scope="col">Descrição</th>
                     {/* <th scope="col">Valor</th> */}
                     <th scope="col">Tipo</th>
-                    <th scope="col">Mês</th>
+                    {/* <th scope="col">Mês</th> */}
                     <th scope="col">Status</th>
                     <th scope="col">Data</th>
                     <th scope="col">Ações</th>

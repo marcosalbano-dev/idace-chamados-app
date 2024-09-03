@@ -18,7 +18,8 @@ class CadastroLancamentos extends React.Component {
         ano: '',
         tipo: '',
         status: '',
-        data_cadastro:'',
+        dataCadastro:'',
+        cliente: '',
         usuario: null,
         atualizando: false
 
@@ -48,8 +49,8 @@ class CadastroLancamentos extends React.Component {
     submit = () => {
         const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
 
-        const { descricao, setor, mes, ano, tipo, data_cadastro } = this.state;
-        const lancamento = { descricao, setor, mes, ano, tipo, data_cadastro, usuario: usuarioLogado.id };
+        const { descricao, setor, mes, ano, tipo, dataCadastro, cliente } = this.state;
+        const lancamento = { descricao, setor, mes, ano, tipo, dataCadastro, cliente, usuario: usuarioLogado.id };
         // status,
         try {
             this.service.validar(lancamento)
@@ -70,8 +71,8 @@ class CadastroLancamentos extends React.Component {
     }
 
     atualizar = () => {
-        const { descricao, setor, mes, ano, tipo,  status, usuario, id, data_cadastro } = this.state;
-        const lancamento = { descricao, setor, mes, ano, tipo, usuario, status, id, data_cadastro };
+        const { descricao, setor, mes, ano, tipo,  status, usuario, id, dataCadastro, cliente } = this.state;
+        const lancamento = { descricao, setor, mes, ano, tipo, usuario, status, id, dataCadastro, cliente };
 
         this.service
             .atualizar(lancamento)
@@ -136,16 +137,16 @@ class CadastroLancamentos extends React.Component {
                 
                 <br />
                 <div className="row">
-                    <div className="col-md-6">
-                        <FormGroup id="inputTipo" label="Setor: *">
-                            <SelectMenu id="inputSetor"
-                                lista={setores}
-                                className="form-control"
-                                name="setor"
-                                value={this.state.setor}
-                                onChange={this.handleChange} />
-                        </FormGroup>
+                <div className="col-md-6">
+                           <FormGroup id="inputCliente" label="Usuário: *">
+                                <input id="inputCliente" 
+                                    className="form-control"
+                                    name="cliente"
+                                    value={this.state.cliente}
+                                    onChange={this.handleChange} />
+                            </FormGroup>
                     </div>
+                    
                     <div className="col-md-6">
                         <FormGroup id="inputTipo" label="Tipo: *">
                             <SelectMenu id="inputTipo"
@@ -159,16 +160,7 @@ class CadastroLancamentos extends React.Component {
                 </div>
                 <br />
                 <div className="row">
-                    {/* <div className="col-md-6">
-                           <FormGroup id="inputDataCadastro" label="Data do Cadastro: *">
-                                <input id="inputDataCadastro" 
-                                    className="form-control"
-                                    name="data_cadastro"
-                                    value={this.state.data_cadastro}
-                                    onChange={this.handleChange} />
-                            </FormGroup>
-                    </div> */}
-                    <div className="col-md-6">
+                <div className="col-md-6">
                         <FormGroup id="inputStatus" label="Status: *">
                         <input type="text" 
                                     className="form-control" 
@@ -177,9 +169,17 @@ class CadastroLancamentos extends React.Component {
                                     disabled />
                         </FormGroup>
                     </div>
+                <div className="col-md-6">
+                        <FormGroup id="inputTipo" label="Setor: *">
+                            <SelectMenu id="inputSetor"
+                                lista={setores}
+                                className="form-control"
+                                name="setor"
+                                value={this.state.setor}
+                                onChange={this.handleChange} />
+                        </FormGroup>
+                    </div>
                 </div>
-                
-                
                 <br /><br />
                 <div className="row">
                     <div className="col-md-6">
